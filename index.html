@@ -236,6 +236,32 @@
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
 
+    .toast {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translate(-50%, -20px);
+      padding: 12px 18px;
+      background: #201018;
+      color: #fff7fb;
+      border-radius: 14px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 4;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+      text-align: center;
+      width: fit-content;
+      max-width: min(420px, calc(100vw - 32px));
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
     @media (max-width: 520px) {
       .card { padding: 28px 22px 34px; }
       .buttons-wrapper { height: 140px; }
@@ -275,7 +301,7 @@
       </div>
       <div class="promise-item">
         <div class="promise-bullet"></div>
-        <p>A loyal, steady boyfriend who keeps choosing you every day.</p>
+        <p>A loyal boyfriend who keeps choosing you every single day.</p>
       </div>
     </div>
 
@@ -292,6 +318,7 @@
   </div>
 
   <div id="confetti" class="confetti"></div>
+  <div id="toast" class="toast">Don't forget to screenshot this screen and send it to your boyfriend.</div>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
@@ -302,6 +329,7 @@
     const character = document.getElementById("character");
     const buttonsWrapper = document.getElementById("buttonsWrapper");
     const confettiContainer = document.getElementById("confetti");
+    const toast = document.getElementById("toast");
 
     let noClickCount = 0;
 
@@ -311,10 +339,11 @@
     yesBtn.addEventListener("click", () => {
       question.textContent = "Yay! You said yes.";
       subtitle.textContent = "I promise to take care of your heart, your laughter, and your dreams.";
-      subtext.textContent = "Now let's celebrate - I'll bring the flowers, you bring that smile.";
+      subtext.textContent = "Now let's celebrate - and don't forget to screenshot this screen and send it to your boyfriend.";
       character.textContent = "*w*";
       character.classList.remove("sad");
       showConfetti();
+      showToast();
     });
 
     noBtn.addEventListener("click", () => {
@@ -414,6 +443,11 @@
         confettiContainer.style.display = "none";
         confettiContainer.innerHTML = "";
       }, 2600);
+    }
+
+    function showToast() {
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3400);
     }
 
     window.addEventListener("resize", () => {
