@@ -30,8 +30,10 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { height: 100%; }
+
     body {
-      min-height: 100vh;
+      min-height: 100dvh;
       font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
       color: var(--ink);
       background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.7), transparent 35%),
@@ -41,7 +43,16 @@
       align-items: center;
       justify-content: center;
       padding: 28px 18px 40px;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    body.no-scroll {
+      position: fixed;
+      inset: 0;
       overflow: hidden;
+      height: 100dvh;
+      width: 100%;
     }
 
     .halo {
@@ -271,6 +282,92 @@
       transform: translate(-50%, 0);
     }
 
+    .hidden { display: none; }
+
+    .intro-card { max-width: 620px; }
+
+    .warmup-grid {
+      display: grid;
+      gap: 14px;
+      margin: 18px 0 6px;
+    }
+
+    .prompt {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 149, 185, 0.25);
+      border-radius: 18px;
+      padding: 14px 14px 12px;
+      box-shadow: 0 10px 26px rgba(255, 111, 146, 0.08);
+    }
+
+    .prompt-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #351a25;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    .option-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .option-btn {
+      border: 1px solid rgba(255, 133, 170, 0.3);
+      background: #fff;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      color: #a64264;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      transition: background 0.16s ease, transform 0.14s ease, box-shadow 0.16s ease, color 0.16s ease;
+    }
+
+    .option-btn:hover { background: #fff4f8; transform: translateY(-1px); }
+
+    .option-btn.selected {
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 12px 26px rgba(255, 111, 146, 0.28);
+    }
+
+    .primary {
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(255, 111, 146, 0.45);
+      letter-spacing: 0.01em;
+      width: 100%;
+      justify-content: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .tiny {
+      font-size: 0.9rem;
+      color: #6d4d59;
+      text-align: center;
+    }
+
+    .fade-in {
+      animation: floatIn 0.35s ease;
+    }
+
+    @keyframes floatIn {
+      0% { opacity: 0; transform: translateY(12px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     @media (max-width: 520px) {
       .card { padding: 28px 22px 34px; }
       .buttons-wrapper { height: 140px; }
@@ -288,7 +385,105 @@
     <span class="heart" style="left: 90%; animation-delay: 3s;"></span>
   </div>
 
-  <div class="card">
+  <div class="card intro-card fade-in" id="warmupCard">
+    <span class="eyebrow">Quick vibe check</span>
+    <h1>Five quick feelings checks</h1>
+    <p class="subtitle">
+      Answer these in a heartbeat—pick what feels most like you right now.
+    </p>
+
+    <div class="warmup-grid">
+      <div class="prompt">
+        <p class="prompt-title">Energy check: how do you recharge?</p>
+        <div class="option-row" role="group" aria-label="Energy preference">
+          <button class="option-btn" data-question="1" data-answer="introvert">Quiet time (I)</button>
+          <button class="option-btn" data-question="1" data-answer="extrovert">People time (E)</button>
+          <button class="option-btn" data-question="1" data-answer="ambivert">Depends on the day</button>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <p class="prompt-title">Plans vs. vibes?</p>
+        <div class="option-row" role="group" aria-label="Planning style">
+          <button class="option-btn" data-question="2" data-answer="judging">Love a clear plan (J)</button>
+          <button class="option-btn" data-question="2" data-answer="perceiving">Go with the flow (P)</button>
+          <button class="option-btn" data-question="2" data-answer="balanced-plan">Start planned, stay flexible</button>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <p class="prompt-title">Decision style?</p>
+        <div class="option-row" role="group" aria-label="Decision style">
+          <button class="option-btn" data-question="3" data-answer="feeling">Heart first (F)</button>
+          <button class="option-btn" data-question="3" data-answer="thinking">Logic first (T)</button>
+          <button class="option-btn" data-question="3" data-answer="blend">Blend of both</button>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <p class="prompt-title">Information intake?</p>
+        <div class="option-row" role="group" aria-label="Information preference">
+          <button class="option-btn" data-question="4" data-answer="sensing">Concrete details (S)</button>
+          <button class="option-btn" data-question="4" data-answer="intuition">Big-picture ideas (N)</button>
+          <button class="option-btn" data-question="4" data-answer="mix-intake">A mix, depending on mood</button>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <p class="prompt-title">When making plans with someone, you like to...</p>
+        <div class="option-row" role="group" aria-label="Collaboration style">
+          <button class="option-btn" data-question="5" data-answer="lead">Take the lead and organize</button>
+          <button class="option-btn" data-question="5" data-answer="share">Share the plan, share the tasks</button>
+          <button class="option-btn" data-question="5" data-answer="follow">Let them pick and happily join</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="startProposalBtn" class="primary" disabled>Continue</button>
+    <p class="tiny subtext">Pick one in each row-no wrong answers.</p>
+  </div>
+
+  <div class="card intro-card hidden fade-in" id="almostCard">
+    <span class="eyebrow">Almost-the-question checklist</span>
+    <h1>A little more honest now</h1>
+    <p class="subtitle">
+      Just a couple more tells before the big ask. Trust your gut.
+    </p>
+
+    <div class="warmup-grid">
+      <div class="prompt">
+        <p class="prompt-title">How do you feel about making something official?</p>
+        <div class="option-row" role="group" aria-label="Official feelings">
+          <button class="option-btn" data-question="6" data-answer="excited">Excited and ready</button>
+          <button class="option-btn" data-question="6" data-answer="hopeful">Hopeful but thoughtful</button>
+          <button class="option-btn" data-question="6" data-answer="curious-official">Curious to see</button>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <p class="prompt-title">When you picture us, you see...</p>
+        <div class="option-row" role="group" aria-label="Picture us">
+          <button class="option-btn" data-question="7" data-answer="team">A team cheering each other on</button>
+          <button class="option-btn" data-question="7" data-answer="cozy">Cozy nights and inside jokes</button>
+          <button class="option-btn" data-question="7" data-answer="adventure">Mini adventures side by side</button>
+        </div>
+      </div>
+
+      <div class="prompt">
+        <p class="prompt-title">Your heart is leaning toward...</p>
+        <div class="option-row" role="group" aria-label="Heart leaning">
+          <button class="option-btn" data-question="8" data-answer="yes">A sweet yes</button>
+          <button class="option-btn" data-question="8" data-answer="almost">Almost there</button>
+          <button class="option-btn" data-question="8" data-answer="tell-me-more">Tell me more, then ask</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="toProposalBtn" class="primary" disabled>Okay, show me</button>
+    <p class="tiny subtext">Three more answers, then the real question appears.</p>
+  </div>
+
+  <div class="card hidden" id="proposalCard">
     <span class="eyebrow">A very serious, very soft question</span>
     <h1 id="question">Will you be my girlfriend?</h1>
     <p class="subtitle" id="subtitle">
@@ -339,20 +534,26 @@
     const buttonsWrapper = document.getElementById("buttonsWrapper");
     const confettiContainer = document.getElementById("confetti");
     const toast = document.getElementById("toast");
+    const warmupCard = document.getElementById("warmupCard");
+    const almostCard = document.getElementById("almostCard");
+    const proposalCard = document.getElementById("proposalCard");
+    const startProposalBtn = document.getElementById("startProposalBtn");
+    const toProposalBtn = document.getElementById("toProposalBtn");
+    const optionButtons = document.querySelectorAll(".option-btn");
 
     let noClickCount = 0;
 
-    // Keep the "No" button inside the CTA area, even on resize.
-    resetNoButtonPosition();
+    optionButtons.forEach((btn) => {
+      btn.addEventListener("click", () => handleOptionClick(btn));
+    });
+
+    startProposalBtn.addEventListener("click", revealProposal);
+    toProposalBtn.addEventListener("click", showProposalCard);
+    updateWarmupState();
 
     yesBtn.addEventListener("click", () => {
-      question.textContent = "Yay! You said yes.";
-      subtitle.textContent = "I promise to take care of your heart, your laughter, and your dreams.";
-      subtext.textContent = "Now let's celebrate - and don't forget to screenshot this screen and send it to your boyfriend.";
-      character.textContent = "*w*";
-      character.classList.remove("sad");
+      showCelebration();
       showConfetti();
-      showToast();
     });
 
     noBtn.addEventListener("click", () => {
@@ -363,13 +564,64 @@
         character.classList.add("sad");
         question.textContent = "Okay, but... consider it?";
         subtitle.textContent = "I'll keep asking sweetly until I make you grin.";
-        subtext.textContent = 'Catch me if you can - the "No" keeps moving for a reason.';
+      subtext.textContent = 'Catch me if you can - the "No" keeps moving for a reason.';
       }
 
       moveNoButtonRandomly();
     });
 
+    function handleOptionClick(btn) {
+      const questionId = btn.dataset.question;
+      const siblings = warmupCard.querySelectorAll(`.option-btn[data-question="${questionId}"]`);
+      siblings.forEach((s) => s.classList.remove("selected"));
+      btn.classList.add("selected");
+      updateWarmupState();
+    }
+
+    function updateWarmupState() {
+      const firstFiveAnswered = [1, 2, 3, 4, 5].every((id) =>
+        warmupCard.querySelector(`.option-btn[data-question="${id}"].selected`)
+      );
+      const nextThreeAnswered = [6, 7, 8].every((id) =>
+        almostCard.querySelector(`.option-btn[data-question="${id}"].selected`)
+      );
+
+      startProposalBtn.disabled = !firstFiveAnswered;
+      startProposalBtn.textContent = firstFiveAnswered ? "See what's next" : "Answer the 5 prompts first";
+
+      toProposalBtn.disabled = !nextThreeAnswered;
+      toProposalBtn.textContent = nextThreeAnswered ? "Ready for the ask" : "Answer these 3 first";
+    }
+
+    function revealProposal() {
+      warmupCard.classList.add("hidden");
+      almostCard.classList.remove("hidden");
+      almostCard.classList.add("fade-in");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showProposalCard() {
+      almostCard.classList.add("hidden");
+      proposalCard.classList.remove("hidden");
+      proposalCard.classList.add("fade-in");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Keep the "No" button inside the CTA area, once visible.
+      setTimeout(resetNoButtonPosition, 60);
+    }
+
+    function showCelebration() {
+      document.body.classList.add("no-scroll");
+      proposalCard.innerHTML = `
+        <span class="eyebrow">You said yes!</span>
+        <h1>We made it official</h1>
+        <p class="subtitle">Thank you for choosing this adventure with me. My heart is yours.</p>
+        <p class="subtext">Screenshot this moment—we're celebrating this together.</p>
+      `;
+    }
+
     function resetNoButtonPosition() {
+      if (proposalCard.classList.contains("hidden")) return;
+
       const wrapperRect = buttonsWrapper.getBoundingClientRect();
       const yesRect = yesBtn.getBoundingClientRect();
       const noWidth = noBtn.offsetWidth;
@@ -381,6 +633,8 @@
     }
 
     function moveNoButtonRandomly() {
+      if (proposalCard.classList.contains("hidden")) return;
+
       const wrapperRect = buttonsWrapper.getBoundingClientRect();
       const noRect = noBtn.getBoundingClientRect();
       const yesRect = yesBtn.getBoundingClientRect();
@@ -460,6 +714,7 @@
     }
 
     window.addEventListener("resize", () => {
+      if (proposalCard.classList.contains("hidden")) return;
       if (noClickCount === 0) {
         resetNoButtonPosition();
       }
